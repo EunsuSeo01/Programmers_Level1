@@ -1,5 +1,5 @@
 /*
- Programmers Lv1 Summer/Winter Coding(~2018) - ¼Ò¼ö ¸¸µé±â
+ Programmers Lv1 Summer/Winter Coding(~2018) - ì†Œìˆ˜ ë§Œë“¤ê¸°
  Created by EunSu Seo
  Last modified 2021-08-09
 */
@@ -7,20 +7,20 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-// nums_lenÀº ¹è¿­ numsÀÇ ±æÀÌÀÔ´Ï´Ù.
-int solution(int nums[], size_t nums_len) {
+// nums_lenì€ ë°°ì—´ numsì˜ ê¸¸ì´ì…ë‹ˆë‹¤.
+int countPrimeNumber(int nums[], size_t nums_len) {
     int answer = 0;
 
-    // ¼¼ °³ÀÇ ÇÕÀÌ 7ÀÌ¶ó°í ÇÏ¸é 2~6±îÁöÀÇ ¼ö¶û ´Ù ³ª´² ºÃÀ» ¶§ ÀÚ¿¬¼ö·Î ³ª´©¾î ¶³¾îÁö´Â °Ô ¾øÀ¸´Ï ¼Ò¼ö·Î ÆÇ´Ü.
+    // ì„¸ ê°œì˜ í•©ì´ 7ì´ë¼ê³  í•˜ë©´ 2~6ê¹Œì§€ì˜ ìˆ˜ë‘ ë‹¤ ë‚˜ëˆ  ë´¤ì„ ë•Œ ìì—°ìˆ˜ë¡œ ë‚˜ëˆ„ì–´ ë–¨ì–´ì§€ëŠ” ê²Œ ì—†ìœ¼ë‹ˆ ì†Œìˆ˜ë¡œ íŒë‹¨.
     for (int i = 0; i < nums_len - 2; i++) {
         for (int j = i + 1; j < nums_len - 1; j++) {
             for (int k = j + 1; k < nums_len; k++) {
                 int sum = nums[i] + nums[j] + nums[k];
                 for (int n = 2; n < sum - 1; n++) {
-                    if ((sum % n) == 0) {   // ³ª´©¾î ¶³¾îÁö´Â °Ô ÀÖÀ½. -> ¼Ò¼ö ¾Æ´Ô.
+                    if ((sum % n) == 0) {   // ë‚˜ëˆ„ì–´ ë–¨ì–´ì§€ëŠ” ê²Œ ìˆìŒ. -> ì†Œìˆ˜ ì•„ë‹˜.
                         break;
                     }
-                    if (n == sum - 2) {     // ³¡±îÁö È®ÀÎÇØ ºÃ´Âµ¥µµ ³ª´©¾î ¶³¾îÁö´Â °Ô ¾øÀ½. -> ¼Ò¼ö!
+                    if (n == sum - 2) {     // ëê¹Œì§€ í™•ì¸í•´ ë´¤ëŠ”ë°ë„ ë‚˜ëˆ„ì–´ ë–¨ì–´ì§€ëŠ” ê²Œ ì—†ìŒ. -> ì†Œìˆ˜!
                         answer++;
                     }
                 }
