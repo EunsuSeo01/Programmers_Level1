@@ -3,8 +3,8 @@
  Created by EunSu Seo
  Last modified 2021-08-09
 */
-class Solution {
-    public int solution(int[] absolutes, boolean[] signs) {
+class NegativePlusPositive {
+    public int negativepluspositive(int[] absolutes, boolean[] signs) {
         int answer = 0;
         for (int i = 0; i < absolutes.length; i++) {
             if (!signs[i])
