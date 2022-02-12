@@ -24,60 +24,55 @@ int* solution(char* id_list[], size_t id_list_len, char* report[], size_t report
     // return 값은 malloc 등 동적 할당을 사용해주세요. 할당 길이는 상황에 맞게 변경해주세요.
     int* answer = (int*)malloc(id_list_len * sizeof(int));
 
-    // 각 회원(id_list의 인덱스로 구분)을 신고한 사람의 id(여러 명이면 띄어쓰기로 구분)를 배열에 저장하려고.
-    char** reported_who = (char**)malloc(id_list_len * sizeof(char*));
-    // 초기화
+    // id_list에서의 인덱스를 사용하여 해당 인덱스의 회원을 신고한 회원의 인덱스를 2차원 배열에 저장한다.
+    int** report_res = (int**)malloc(id_list_len * sizeof(int*));
+    // 2차원 배열 동적할당
     for (int i = 0; i < id_list_len; i++) {
-        reported_who[i] = (char*)malloc(sizeof(10));
+        report_res[i] = (int*)malloc(id_list_len * sizeof(int));
     }
 
-    char reporting_id[10] = "";
-    int reported_index, condition = 1;
+    int reporting_index, reported_index, condition = 1;
     int* reported_count = (int*)calloc(id_list_len, sizeof(int)); // 초기화까지.
 
     for (int i = 0; i < report_len; i++) {
         char* ptr = strtok(report[i], " ");      // " " 공백 문자를 기준으로 문자열 report[i]를 자름, 포인터 반환 -> 신고한 사람의 아이디가 저장돼 있음.
-        strcpy(reporting_id, *ptr); // 신고한 사람 아이디 저장.
+        printf("%s\n", ptr); // test
+        
+        reporting_index = get_id_index(ptr, id_list, id_list_len);
+        if (reported_index == -1)
+            exit(0);
 
         ptr = strtok(NULL, " ");      // 다음 문자열을 잘라서 포인터를 반환 -> 신고받은 사람의 아이디가 저장돼 있음.
         reported_index = get_id_index(ptr, id_list, id_list_len);
         if (reported_index == -1)
             exit(0);
 
-        // reported_who에 값 저장.
-        if (condition != 0) {
-            char* inserted_str = strcpy(reporting_id, " ");
-            strcpy(reported_who[reported_index], inserted_str);
+        // 중복 신고 확인.
+        for (int i = 0; i < id_list_len; i++) {
+            for (int j = 0; j < reported_count[reported_index]; j++) {
+                for (int k = 1; k < reported_count[reported_index] - 1; k++) {
+                    if (report_res[i][j] == reporting_index) {
+                        condition = 0;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 중복 없으면 값 저장,
+        if (condition == 1) {
+            report_res[reported_index][reported_count[reported_index]] = reporting_index;
             reported_count[reported_index]++;
         }
-
-        // 중복 신고 확인.
-        char* check = strtok(reported_who[reported_index], " ");      // " " 공백 문자를 기준으로 문자열을 자름, 포인터 반환
-        while (check != NULL)               // 자른 문자열이 나오지 않을 때까지 반복
-        {
-            // 같은 사람한테 신고당한 것은 count하지 않는다.
-            if (strcmp(check, reporting_id) == 0) {
-                condition = 0;
-                break;
-            }
-            check = strtok(NULL, " ");      // 다음 문자열을 잘라서 포인터를 반환
-        }
+        else
+            condition = 1; // 초기화.
     }
 
-    // 신고 받은 횟수로 result 계산.
+    // 신고 받은 횟수로 answer 계산.
     for (int i = 0; i < id_list_len; i++) {
         if (reported_count[i] >= k) {
-            char* reporting = strtok(reported_who[i], " ");
-            int index = get_id_index(reporting, id_list, id_list_len);
-
-            answer[index]++;
-
-            while (reporting != NULL)
-            {
-                reporting = strtok(NULL, " ");
-                int index = get_id_index(reporting, id_list, id_list_len);
-                answer[index]++;
-            }
+            for (int j = 0; j < reported_count[i]; j++)
+                answer[report_res[i][j]]++;
         }
     }
 
@@ -118,7 +113,7 @@ int main() {
 
     int* res = solution(id_list, 4, report, 5, 2);
 
-    for (int i = 0; i < strlen(res); i++)
+    for (int i = 0; i < 4; i++)
         printf("%d ", res[i]);
 
     return 0;
