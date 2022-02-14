@@ -25,7 +25,12 @@ char* solution(int a, int b) {
     }
     
     // 2. b일이 a월의 몇 요일인지 계산.
-    int res = (startDay[a - 1] + b) % 7;
+    int res  = 0;
+
+    if (startDay[a - 1] == 0)
+        res = (6 + (b % 7)) % 7;
+    else 
+        res = ((startDay[a - 1] - 1) + (b % 7)) % 7;
     
     switch (res)
     {
@@ -35,22 +40,22 @@ char* solution(int a, int b) {
 	    case 1:
 		    answer = "MON";
 		    break;
-        case 2:
+	    case 2:
 		    answer = "TUE";
 		    break;
-        case 3:
+	    case 3:
 		    answer = "WED";
 		    break;
-        case 4:
+	    case 4:
 		    answer = "THU";
 		    break;
-        case 5:
+	    case 5:
 		    answer = "FRI";
 		    break;
-        case 6:
+	    case 6:
 		    answer = "SAT";
 		    break;
-	}
+    }
     
     return answer;
 }
